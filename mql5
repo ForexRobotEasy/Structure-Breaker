@@ -1,0 +1,78 @@
+
+//+------------------------------------------------------------------+
+//|                                                         Structure Breaker |
+//|                                      https://www.forexroboteasy.com |
+//|                                                  Forex Robot Easy Team |
+//+------------------------------------------------------------------+
+
+// Define input parameters
+input int minStartingCapital = 300; // Minimum starting capital
+input int accountLeverage = 100; // Recommended account leverage
+
+// Define trading pairs and timeframes
+string[] tradingPairs = {'EURUSD', 'GBPUSD', 'USDJPY'};
+ENUM_TIMEFRAMES[] timeframes = {PERIOD_M5};
+
+//+------------------------------------------------------------------+
+//|                                                   Structure Breaker EA |
+//|                                                                        |
+//|   Implements the break of structure concept to identify potential shifts |
+//|   in price momentum and forecast future price movements. The EA works  |
+//|   on low spread pairs and can be optimized to operate on multiple pairs|
+//|   and timeframes simultaneously. It also integrates VPS hosting for    |
+//|   seamless trading operations.                                         |
+//+------------------------------------------------------------------+
+void OnTick()
+{
+    // Check if the account meets the minimum starting capital requirement
+    double accountBalance = AccountInfoDouble(ACCOUNT_BALANCE);
+    if (accountBalance < minStartingCapital)
+    {
+        Print('Insufficient account balance. Minimum starting capital required:', minStartingCapital);
+        return;
+    }
+
+    // Check if the account leverage meets the recommended requirement
+    int accountLeverage = AccountInfoInteger(ACCOUNT_LEVERAGE);
+    if (accountLeverage < accountLeverage)
+    {
+        Print('Insufficient account leverage. Recommended leverage:', accountLeverage);
+        return;
+    }
+
+    // Loop through each trading pair
+    for (int i = 0; i < ArraySize(tradingPairs); i++)
+    {
+        // Loop through each timeframe
+        for (int j = 0; j < ArraySize(timeframes); j++)
+        {
+            string symbol = tradingPairs[i];
+            ENUM_TIMEFRAMES timeframe = timeframes[j];
+
+            // Analyze market prices to detect break of structure patterns
+            double previousHigh = High(symbol, timeframe, 1);
+            double previousLow = Low(symbol, timeframe, 1);
+            double currentHigh = High(symbol, timeframe, 0);
+            double currentLow = Low(symbol, timeframe, 0);
+
+            // Determine market sentiment based on the occurrence of a shift in price momentum
+            bool bullishBreak = currentHigh > previousHigh && currentLow > previousLow;
+            bool bearishBreak = currentHigh < previousHigh && currentLow < previousLow;
+
+            // Use break of structure concept to forecast future price movements
+            if (bullishBreak)
+            {
+                // Place a buy order or execute desired trading strategy
+                // ...
+            }
+            else if (bearishBreak)
+            {
+                // Place a sell order or execute desired trading strategy
+                // ...
+            }
+        }
+    }
+
+    // Implement VPS hosting functionality for seamless trading operations
+    // ...
+}
